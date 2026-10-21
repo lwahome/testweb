@@ -6,14 +6,20 @@
 /* CSS Variables for theming */
 :root {
   /* Light mode colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #1a1a1a;
-  --text-secondary: #666666;
-  --accent: #3498db;
-  --accent-dark: #2980b9;
-  --border: #e0e0e0;
-  --shadow: rgba(0, 0, 0, 0.1);
+  /* Lucent brand */
+  --navy: #0a1a3a;
+  --navy-deep: #050d22;
+  --cyan: #22d3ee;
+  --cyan-glow: rgba(34, 211, 238, 0.45);
+
+  --bg-primary: #f5f8fc;
+  --bg-secondary: #e8eef7;
+  --text-primary: #0a1a3a;
+  --text-secondary: #4a5a75;
+  --accent: #0891b2;
+  --accent-dark: #0a1a3a;
+  --border: #d3dceb;
+  --shadow: rgba(10, 26, 58, 0.12);
   
   /* Typography */
   --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -30,10 +36,12 @@
 
 /* Dark mode colors */
 body.dark-mode {
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2d2d2d;
-  --text-primary: #ffffff;
-  --text-secondary: #b0b0b0;
+  --bg-primary: #050d22;
+  --bg-secondary: #0d1f45;
+  --text-primary: #e8f6fb;
+  --text-secondary: #9fb3cf;
+  --accent: #22d3ee;
+  --border: #1c3263;
   --shadow: rgba(0, 0, 0, 0.5);
 }
 
@@ -219,8 +227,10 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-  color: white;
+  background:
+    radial-gradient(ellipse at 50% 35%, var(--cyan-glow) 0%, transparent 60%),
+    linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%);
+  color: #ffffff;
   text-align: center;
   padding: var(--spacing-unit);
   gap: 2rem;
@@ -241,8 +251,8 @@ nav {
 
 .hero-cta {
   display: inline-block;
-  background-color: white;
-  color: var(--accent);
+  background-color: var(--cyan);
+  color: var(--navy-deep);
   padding: 0.75rem 2rem;
   border-radius: 30px;
   font-weight: bold;
@@ -252,7 +262,7 @@ nav {
 
 .hero-cta:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 24px var(--cyan-glow);
 }
 
 /* ============================================================================
@@ -667,4 +677,44 @@ footer p {
   section {
     padding: 2rem var(--spacing-unit);
   }
+}
+
+/* ============================================================================
+   LUCENT BRAND TOUCHES
+   ============================================================================ */
+.logo-mark {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan), 0 0 22px var(--cyan-glow);
+}
+
+.logo-text {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.hero-content h1 {
+  text-shadow: 0 0 28px var(--cyan-glow);
+}
+
+.project-card {
+  border-top: 3px solid var(--cyan);
+}
+
+.whatsapp-btn {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: 30px;
+  background: #25d366;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.whatsapp-btn:hover {
+  color: #ffffff;
+  opacity: 0.9;
 }
