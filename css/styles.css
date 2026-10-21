@@ -319,6 +319,7 @@ section h2 {
   box-shadow: 0 10px 30px var(--shadow);
   aspect-ratio: 1 / 1;
   object-fit: cover;
+  object-position: center top;
 }
 
 @media (min-width: 768px) {
