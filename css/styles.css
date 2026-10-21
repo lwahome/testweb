@@ -692,6 +692,12 @@ footer p {
   box-shadow: 0 0 10px var(--cyan), 0 0 22px var(--cyan-glow);
 }
 
+.logo-icon {
+  height: 36px;
+  width: 36px;
+  object-fit: contain;
+}
+
 .logo-text {
   font-weight: 700;
   letter-spacing: 0.08em;
