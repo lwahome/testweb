@@ -719,3 +719,44 @@ footer p {
   color: #ffffff;
   opacity: 0.9;
 }
+
+/* Data privacy consent */
+.consent-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.consent-group input {
+  margin-top: 0.2rem;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+}
+
+/* Privacy policy page */
+.policy {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.policy h2 {
+  text-align: left;
+  font-size: var(--font-size-xl);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.policy p,
+.policy li {
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.policy ul {
+  margin-left: 1.5rem;
+}

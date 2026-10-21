@@ -133,23 +133,41 @@ if (contactForm) {
       return;
     }
     
+    // Data privacy consent is required before we collect any details
+    const consent = document.getElementById('privacy-consent');
+    if (consent && !consent.checked) {
+      alert('Please tick the box to agree to the Privacy Policy before sending.');
+      consent.focus();
+      return;
+    }
+    
     // Disable submit button while processing
     const submitBtn = contactForm.querySelector('.submit-btn');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = 'Sending...';
     submitBtn.disabled = true;
     
-    // If using Formspree, the form will submit automatically
-    // This is a fallback for demonstration
-    console.log('Form data:', { name, email, message });
-    
-    // Show success message (in real app, would wait for server response)
-    setTimeout(() => {
-      alert('Thank you for your message! I\'ll get back to you soon.');
-      contactForm.reset();
-      submitBtn.textContent = originalText;
-      submitBtn.disabled = false;
-    }, 1000);
+    // Send the message to Formspree
+    fetch(contactForm.action, {
+      method: 'POST',
+      body: new FormData(contactForm),
+      headers: { 'Accept': 'application/json' }
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert('Thank you for your message! I\'ll get back to you soon.');
+          contactForm.reset();
+        } else {
+          alert('Sorry, your message could not be sent. Please try again or reach me on WhatsApp.');
+        }
+      })
+      .catch(() => {
+        alert('Sorry, your message could not be sent. Please check your connection or reach me on WhatsApp.');
+      })
+      .finally(() => {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      });
   });
 }
 
