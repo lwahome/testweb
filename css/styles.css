@@ -766,3 +766,27 @@ footer p {
 .policy ul {
   margin-left: 1.5rem;
 }
+
+/* My Work */
+.work-feature {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.work-image {
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-position: top;
+}
+
+.project-links a:hover {
+  color: white;
+}
+
+@media (min-width: 768px) {
+  .work-feature {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+  }
+}
