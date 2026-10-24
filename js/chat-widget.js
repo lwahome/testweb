@@ -109,7 +109,7 @@
         body: JSON.stringify({ messages: history }),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.reply) throw new Error(data.error || 'No reply');
+      if (!res.ok || !data.reply) throw new Error(data.code || ('HTTP_' + res.status));
 
       typing.classList.remove('chat-typing');
       typing.textContent = data.reply;
@@ -118,7 +118,7 @@
     } catch (err) {
       typing.classList.remove('chat-typing');
       typing.classList.add('chat-error');
-      typing.textContent = "Sorry, I can't answer right now. Please reach Lucy on WhatsApp at 0745 477 472.";
+      typing.textContent = "Sorry, I can't answer right now. Please reach Lucy on WhatsApp at 0745 477 472.\n(code: " + (err.message || 'NETWORK') + ")";
       history.pop(); // let the visitor try the same question again
       save();
     } finally {

@@ -37,7 +37,7 @@ module.exports = async function handler(req, res) {
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return res.status(500).json({ error: 'The assistant is not set up yet.' });
+    return res.status(500).json({ error: 'The assistant is not set up yet.', code: 'NO_KEY' });
   }
 
   // Clean up the conversation sent by the browser.
@@ -79,7 +79,14 @@ module.exports = async function handler(req, res) {
 
     if (!response.ok) {
       console.error('Anthropic API error', response.status, data && data.error);
-      return res.status(502).json({ error: 'The assistant is unavailable right now.' });
+      // A short code (never the key) so the owner can see what went wrong.
+      const type = (data && data.error && data.error.type) || 'unknown';
+      const msg = String((data && data.error && data.error.message) || '');
+      const code = /credit balance/i.test(msg) ? 'NO_CREDITS'
+        : response.status === 401 ? 'BAD_KEY'
+        : response.status === 404 ? 'MODEL_NOT_FOUND'
+        : 'API_' + response.status + '_' + type;
+      return res.status(502).json({ error: 'The assistant is unavailable right now.', code });
     }
 
     const reply = (data.content || [])
@@ -91,6 +98,6 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ reply: reply || 'Sorry, I could not answer that. Please reach Lucy on WhatsApp.' });
   } catch (err) {
     console.error('Chat function failed', err);
-    return res.status(500).json({ error: 'The assistant is unavailable right now.' });
+    return res.status(500).json({ error: 'The assistant is unavailable right now.', code: 'SERVER_' + (err && err.name || 'ERROR') });
   }
 };
