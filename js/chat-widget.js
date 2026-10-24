@@ -5,7 +5,7 @@
 
 (function () {
   const STORAGE_KEY = 'lucent-chat';
-  const WELCOME = "Hi! I'm Lucent's assistant. Ask me about our websites for small businesses or AI consultations.";
+  const WELCOME = "Hi! I'm Lucent's assistant. Ask me about our websites, AI assistants or AI consultations.";
 
   let history = [];
   try {

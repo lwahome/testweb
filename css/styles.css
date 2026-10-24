@@ -982,3 +982,16 @@ body.dark-mode .chat-msg-user {
     bottom: 16px;
   }
 }
+
+.coming-soon {
+  display: inline-block;
+  margin-right: 0.4rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: 20px;
+  background: var(--cyan);
+  color: var(--navy-deep);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
