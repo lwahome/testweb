@@ -56,12 +56,20 @@
   const input = panel.querySelector('#chat-input');
   const sendBtn = panel.querySelector('.chat-send');
 
+  // Scroll after the browser has drawn the new message, so typing stays smooth.
+  function scrollToBottom() {
+    requestAnimationFrame(() => { list.scrollTop = list.scrollHeight; });
+  }
+
+  // Let the browser show what's on screen before doing more work.
+  const nextFrame = () => new Promise(r => requestAnimationFrame(() => setTimeout(r, 0)));
+
   function addBubble(role, text) {
     const bubble = document.createElement('div');
     bubble.className = 'chat-msg chat-msg-' + role;
     bubble.textContent = text;
     list.appendChild(bubble);
-    list.scrollTop = list.scrollHeight;
+    scrollToBottom();
     return bubble;
   }
 
@@ -73,7 +81,7 @@
     launcher.setAttribute('aria-expanded', 'true');
     launcher.classList.add('open');
     input.focus();
-    list.scrollTop = list.scrollHeight;
+    scrollToBottom();
   }
 
   function closeChat() {
@@ -87,20 +95,24 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) closeChat(); });
 
   // ---- Sending messages -----------------------------------------------------
+  let busy = false; // stops a second message being sent while waiting for a reply
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const text = input.value.trim();
-    if (!text) return;
+    if (!text || busy) return;
+    busy = true;
 
+    // Show the visitor's message straight away; do the rest after it appears.
     input.value = '';
-    input.disabled = true;
+    input.readOnly = true; // readOnly (not disabled) keeps focus, which is cheaper
     sendBtn.disabled = true;
-
-    history.push({ role: 'user', content: text });
-    save();
     addBubble('user', text);
     const typing = addBubble('assistant', 'Typing…');
     typing.classList.add('chat-typing');
+    await nextFrame();
+
+    history.push({ role: 'user', content: text });
+    save();
 
     try {
       const res = await fetch('/api/chat', {
@@ -122,10 +134,11 @@
       history.pop(); // let the visitor try the same question again
       save();
     } finally {
-      input.disabled = false;
+      busy = false;
+      input.readOnly = false;
       sendBtn.disabled = false;
-      input.focus();
-      list.scrollTop = list.scrollHeight;
+      if (document.activeElement !== input) input.focus();
+      scrollToBottom();
     }
   });
 })();
