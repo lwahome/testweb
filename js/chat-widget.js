@@ -64,10 +64,21 @@
   // Let the browser show what's on screen before doing more work.
   const nextFrame = () => new Promise(r => requestAnimationFrame(() => setTimeout(r, 0)));
 
+  // Safety net: remove markdown symbols (e.g. **bold**) the chat can't display.
+  function plain(text) {
+    return String(text)
+      .replace(/\*\*(.+?)\*\*/g, '$1')
+      .replace(/__(.+?)__/g, '$1')
+      .replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '$1 ($2)')
+      .replace(/^#{1,6}\s+/gm, '')
+      .replace(/^\s*\*\s+/gm, '- ')
+      .replace(/\*\*/g, '');
+  }
+
   function addBubble(role, text) {
     const bubble = document.createElement('div');
     bubble.className = 'chat-msg chat-msg-' + role;
-    bubble.textContent = text;
+    bubble.textContent = role === 'assistant' ? plain(text) : text;
     list.appendChild(bubble);
     scrollToBottom();
     return bubble;
@@ -124,7 +135,7 @@
       if (!res.ok || !data.reply) throw new Error(data.code || ('HTTP_' + res.status));
 
       typing.classList.remove('chat-typing');
-      typing.textContent = data.reply;
+      typing.textContent = plain(data.reply);
       history.push({ role: 'assistant', content: data.reply });
       save();
     } catch (err) {
